@@ -80,7 +80,7 @@ def run(fold=0):
     np.random.seed(65432)
     lasagne.random.set_rng(np.random.RandomState(98765))
     sys.setrecursionlimit(2000)
-    BATCH_SIZE = 2
+    BATCH_SIZE = 2 # was 2
     INPUT_PATCH_SIZE =(128, 128, 128)
     num_classes=4
 
@@ -109,19 +109,28 @@ def run(fold=0):
     all_data = load_dataset()
     keys_sorted = np.sort(all_data.keys())
 
-    crossval_folds = KFold(len(all_data.keys()), n_folds=5, shuffle=True, random_state=123456)
+    if fold > -1:
+        crossval_folds = KFold(len(all_data.keys()), n_folds=5, shuffle=True, random_state=123456)
 
-    ctr = 0
-    for train_idx, test_idx in crossval_folds:
-        print len(train_idx), len(test_idx)
-        if ctr == I_AM_FOLD:
-            train_keys = [keys_sorted[i] for i in train_idx]
-            test_keys = [keys_sorted[i] for i in test_idx]
-            break
-        ctr += 1
+        ctr = 0
+        for train_idx, test_idx in crossval_folds:
+            print len(train_idx), len(test_idx)
+            if ctr == I_AM_FOLD:
+                train_keys = [keys_sorted[i] for i in train_idx]
+                test_keys = [keys_sorted[i] for i in test_idx]
+                break
+            ctr += 1
 
-    train_data = {i:all_data[i] for i in train_keys}
-    test_data = {i:all_data[i] for i in test_keys}
+        train_data = {i:all_data[i] for i in train_keys}
+        test_data = {i:all_data[i] for i in test_keys}
+    else:
+        val_data = load_dataset(folder=paths.preprocessed_validation_data_folder)
+        val_keys_sorted = np.sort(val_data.keys()) 
+
+        train_data = {i:all_data[i] for i in keys_sorted}
+        test_data = {i:val_data[i] for i in val_keys_sorted}
+       
+        print len(train_data), len(test_data)
 
     data_gen_train = create_data_gen_train(train_data, INPUT_PATCH_SIZE, num_classes, BATCH_SIZE,
                                            contrast_range=(0.75, 1.5), gamma_range = (0.8, 1.5),

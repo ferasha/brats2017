@@ -23,8 +23,9 @@ parser.add_argument("-m", "--mode", help="can be train or testval. Use testval f
                     type=str)
 args = parser.parse_args()
 
-if args.mode == "val":
-    run_preprocessing_BraTS2017_valOrTestSet(paths.raw_validation_data_folder, paths.preprocessed_validation_data_folder)
+if args.mode == "val":    
+    run_preprocessing_BraTS2017_trainSet(paths.raw_validation_data_folder, paths.preprocessed_validation_data_folder)
+#    run_preprocessing_BraTS2017_valOrTestSet(paths.raw_validation_data_folder, paths.preprocessed_validation_data_folder)
 elif args.mode == "train":
     run_preprocessing_BraTS2017_trainSet(paths.raw_training_data_folder, paths.preprocessed_training_data_folder)
 elif args.mode == "test":

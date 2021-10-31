@@ -22,7 +22,8 @@ import os
 import sys
 import theano.tensor
 from utils_validation import run_validation_mirroring
-from Utils.general_utils import softmax_helper
+#from Utils.general_utils import softmax_helper
+from utils import softmax_helper
 from network_architecture import build_net
 import theano.tensor as T
 from sklearn.cross_validation import KFold
