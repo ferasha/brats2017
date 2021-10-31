@@ -80,7 +80,7 @@ def run(fold=0):
     np.random.seed(65432)
     lasagne.random.set_rng(np.random.RandomState(98765))
     sys.setrecursionlimit(2000)
-    BATCH_SIZE = 2
+    BATCH_SIZE = 2 # was 2
     INPUT_PATCH_SIZE =(128, 128, 128)
     num_classes=4
 
